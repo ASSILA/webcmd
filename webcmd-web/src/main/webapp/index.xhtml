@@ -7,23 +7,26 @@
     <h:head>
         <title>Webcmd</title>
         <h:outputStylesheet name="webcmd.css" library="css"/>
+        <script type="text/javascript">
+            var currentUser = '#{webCommandLineController.currentUserId}';
+            var pwd = '#{webCommandLineController.pwd}';
+            var hostname = '#{webCommandLineController.hostname}';
+        </script>
+        <h:outputScript name="webcmd.js" library="js"/>
     </h:head>
     <h:body>
         <div class="webcmd">
-            <p:tabView>
-                <p:tab title="Terminal">
-                    <h:form>
-                        <p:focus for="commandLine" />
-                        <p:terminal id="commandLine" widgetVar="commandLineVar"
-                                    commandHandler="#{webCommandLineController.handleCommand}"
-                                    welcomeMessage="This is the webcmd, here you can connect securely to your ssh unix machine."
-                                    prompt="mochieng@localhost ~$"/>
-                    </h:form>
-                </p:tab>
+            <p:tabView id="terminalPanel">
                 <p:tab title="Web Terminal">
-                    <h:panelGroup layout="block" styleClass="wc-terminal" jsf:contenteditable="true">
-                        <div class="wc-line"><span>mochieng</span>@localhost ~$&nbsp;</div>
-                    </h:panelGroup>
+                    <h:form id="terminalForm">
+                        <h:inputHidden id="commandValue" value="#{webCommandLineController.command}"/>
+                        <p:remoteCommand name="sendCommand" process="@form"/>
+                        <h:panelGroup id="wc-termina00001" layout="block" styleClass="wc-terminal" 
+                                      jsf:contenteditable="true"
+                                      jsf:data-commandValue="#{p:component('commandValue')}"
+                                      jsf:data-sendCommandName="sendCommand">
+                        </h:panelGroup>
+                    </h:form>
                 </p:tab>
             </p:tabView>
         </div>
