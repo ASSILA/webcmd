@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Webcmd</title>
+        <h:outputStylesheet name="webcmd.css" library="css"/>
+    </h:head>
+    <h:body>
+        <div class="webcmd">
+            <p:tabView>
+                <p:tab title="Terminal">
+                    <h:form>
+                        <p:focus for="commandLine" />
+                        <p:terminal id="commandLine" widgetVar="commandLineVar"
+                                    commandHandler="#{webCommandLineController.handleCommand}"
+                                    welcomeMessage="This is the webcmd, here you can connect securely to your ssh unix machine."
+                                    prompt="mochieng@localhost ~$"/>
+                    </h:form>
+                </p:tab>
+                <p:tab title="Web Terminal">
+                    <h:panelGroup layout="block" styleClass="wc-terminal" jsf:contenteditable="true">
+                        <div class="wc-line"><span>mochieng</span>@localhost ~$&nbsp;</div>
+                    </h:panelGroup>
+                </p:tab>
+            </p:tabView>
+        </div>
+    </h:body>
+</html>
+

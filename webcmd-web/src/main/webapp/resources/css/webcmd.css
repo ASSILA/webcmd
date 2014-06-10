@@ -1,0 +1,36 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 10, 2014, 12:43:29 PM
+    Author     : mochieng
+*/
+html, body{
+    padding: 0px;
+    margin: 0px;
+}
+.webcmd{
+
+}
+
+.webcmd *{
+    font-size: 12px;
+    color: #aaa;
+}
+
+.ui-terminal{
+    background: #000;
+    color: #fff;
+}
+
+.wc-terminal{
+    background: #000;
+    height: 400px;
+    width: 100%;
+}
+
+.wc-terminal .wc-line span{
+    color: #339988;
+}
