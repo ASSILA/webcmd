@@ -19,7 +19,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Push Servlet</servlet-name>
-        <url-pattern>/webcmd-terminal/*</url-pattern>
+        <url-pattern>/primepush/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

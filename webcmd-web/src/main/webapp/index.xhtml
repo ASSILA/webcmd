@@ -2,31 +2,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:jsf="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:attr="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:webcmd="http://webcmd.anosym.com/jsf"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Webcmd</title>
-        <h:outputStylesheet name="webcmd.css" library="css"/>
-        <script type="text/javascript">
-            var currentUser = '#{webCommandLineController.currentUserId}';
-            var pwd = '#{webCommandLineController.pwd}';
-            var hostname = '#{webCommandLineController.hostname}';
-        </script>
         <h:outputScript name="webcmd.js" library="js"/>
     </h:head>
     <h:body>
+        <h:outputStylesheet name="webcmd.css" library="css"/>
         <div class="webcmd">
             <p:tabView id="terminalPanel">
                 <p:tab title="Web Terminal">
-                    <h:form id="terminalForm">
-                        <h:inputHidden id="commandValue" value="#{webCommandLineController.command}"/>
-                        <p:remoteCommand name="sendCommand" process="@form"/>
-                        <h:panelGroup id="wc-termina00001" layout="block" styleClass="wc-terminal" 
-                                      jsf:contenteditable="true"
-                                      jsf:data-commandValue="#{p:component('commandValue')}"
-                                      jsf:data-sendCommandName="sendCommand">
-                        </h:panelGroup>
+                    <h:form id="terminalForm" attr:sendCommand="sendCommand_#{webCommandLineController.sessionChannel}">
+                        <p:remoteCommand name="sendCommand_#{webCommandLineController.sessionChannel}" process="@form"/>
+                        <webcmd:asyncTerminal channelId="_defaultChannel" commandHandler="#{webCommandLineController.handleCommand}" 
+                                              attr:prompt="#{webCommandLineController.prompt}" 
+                                              widgetVar="asyncTerminal" id="asyncTerminalId"/>
                     </h:form>
+                    <p:socket onMessage="handleAsynchronousMessages" channel="/#{webCommandLineController.sessionChannel}" autoConnect="false"/>
                 </p:tab>
             </p:tabView>
         </div>

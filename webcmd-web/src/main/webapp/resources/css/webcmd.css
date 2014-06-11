@@ -10,27 +10,40 @@ and open the template in the editor.
 html, body{
     padding: 0px;
     margin: 0px;
+    height: 100%;
 }
 .webcmd{
 
 }
 
 .webcmd *{
-    font-size: 12px;
+    font-size: 14px;
     color: #aaa;
 }
 
 .ui-terminal{
     background: #000;
     color: #fff;
+    height: 800px;
 }
 
-.wc-terminal{
+.wc-terminal {
     background: #000;
     height: 400px;
     width: 100%;
 }
 
-.wc-terminal .wc-line span{
+.ui-terminal-input{
+    padding-left: 4px;
+}
+
+.ui-terminal .ui-terminal-prompt .wc-host,
+.ui-terminal .ui-terminal-content span:first-child .wc-host
+{
+    color: #8CA6A2;
+}
+.ui-terminal .ui-terminal-prompt .wc-user,
+.ui-terminal .ui-terminal-content span:first-child .wc-user
+{
     color: #339988;
 }

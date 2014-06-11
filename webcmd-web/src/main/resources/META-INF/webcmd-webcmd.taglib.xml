@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
+                version="2.0">
+    <namespace>http://webcmd.anosym.com/jsf</namespace>
+    <tag>
+        <tag-name>asyncTerminal</tag-name>
+        <description><![CDATA[Terminal is an ajax powered component bringing desktop command-line tools to the web.]]></description>
+        <component>
+            <component-type>com.anosym.webcmd.web.jsf.component.AsynchronousTerminal</component-type>
+            <renderer-type>com.anosym.webcmd.web.jsf.renderer.AsynchronousTerminalRenderer</renderer-type>
+            <handler-class>com.anosym.webcmd.web.jsf.component.AsynchronousTerminalHandler</handler-class>
+        </component>
+        <attribute>
+            <description><![CDATA[Unique identifier of the component in a namingContainer.]]></description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]></description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]></description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Name of the client side widget.]]></description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Inline style of the component.]]></description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Style class of the component.]]></description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Welcome message to be displayed on initial load.]]></description>
+            <name>welcomeMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Primary prompt text.]]></description>
+            <name>prompt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The channel id for this command prompt. Used for websocket asynchronous update.]]></description>
+            <name>channelId</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Method to execute by passing command and the arguments.]]></description>
+            <name>commandHandler</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+    </tag>
+</facelet-taglib>

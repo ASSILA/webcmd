@@ -5,15 +5,14 @@
  */
 package com.anosym.webcmd.web;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.push.PushContext;
-import org.primefaces.push.PushContextFactory;
 
 /**
  *
@@ -28,23 +27,38 @@ public class WebCommandLineController implements Serializable {
      *
      * Must start with a trailing forward slash.
      */
-    private String sessionChannel;
+    private String sessionChannel = "defaultChannel";
     private PushContext currentPushContext;
     private String command;
     private String currentUserId = "mochieng";
     private String pwd = "~";
     private String hostname = "localhost";
 
-    public void handleCommand(String command, String[] params) {
+    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
+    public TerminalResponse handleCommand(String command, String[] params) {
         try {
-            Process p = Runtime.getRuntime().exec(command);
+            String cmd[] = new String[params.length + 1];
+            cmd[0] = command;
+            System.arraycopy(params, 0, cmd, 1, params.length);
+            System.out.println("Command: " + Arrays.toString(cmd));
+            Process p = Runtime.getRuntime().exec(cmd);
+            p.waitFor();
             InputStream inn = p.getInputStream();
             int count = inn.available();
             byte[] buffer = new byte[count];
+            //wait for the input to be available.
             inn.read(buffer);
-        } catch (IOException ex) {
+            String result = new String(buffer);
+            result = result.replaceAll("\n", "<br/>");
+            return new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
+        } catch (Exception ex) {
             Logger.getLogger(WebCommandLineController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return new TerminalResponse("", TerminalResponse.TerminalResponseType.COMPLETE);
+    }
+
+    public String getPrompt() {
+        return "<span class=\"wc-user\">mochieng</span>@<span class=\"wc-host\">localhost</span> ~$";
     }
 
     public String getCurrentUserId() {
@@ -71,10 +85,4 @@ public class WebCommandLineController implements Serializable {
         return sessionChannel;
     }
 
-    private synchronized void updateCmd(Object message) {
-        if (currentPushContext == null) {
-            currentPushContext = PushContextFactory.getDefault().getPushContext();
-        }
-        currentPushContext.push(sessionChannel, message);
-    }
 }

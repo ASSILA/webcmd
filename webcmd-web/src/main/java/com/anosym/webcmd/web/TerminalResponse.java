@@ -5,34 +5,53 @@
  */
 package com.anosym.webcmd.web;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mochieng
  */
-public class TerminalResponse {
+public class TerminalResponse implements Serializable{
 
-    private String value;
-    private boolean complete;
+    public static enum TerminalResponseType {
 
-    public TerminalResponse(String value, boolean complete) {
-        this.value = value;
-        this.complete = complete;
+        //The response we have received is asynchronous, and hence we should wait for results.
+        ASYNCHRONOUS,
+        //the response was a single invocation.
+        COMPLETE;
     }
 
-    public String getValue() {
-        return value;
+    //Used for asynchronous invocations.
+    public static interface TerminalResponseListener {
+
+        void onResponse(String data);
+
+        void onResponseComplete();
+    }
+    private final String response;
+    private final TerminalResponseType responseType;
+    //registered listener to this reponse if you require more data.
+    private TerminalResponseListener responseListener;
+
+    public TerminalResponse(String response, TerminalResponseType responseType) {
+        this.response = response;
+        this.responseType = responseType;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public String getResponse() {
+        return response;
     }
 
-    public boolean isComplete() {
-        return complete;
+    public TerminalResponseType getResponseType() {
+        return responseType;
     }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
+    public TerminalResponseListener getResponseListener() {
+        return responseListener;
+    }
+
+    public void setResponseListener(TerminalResponseListener responseListener) {
+        this.responseListener = responseListener;
     }
 
 }
