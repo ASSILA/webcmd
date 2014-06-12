@@ -11,7 +11,10 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.push.PushContext;
 
 /**
@@ -35,11 +38,10 @@ public class WebCommandLineController implements Serializable {
     private String hostname = "localhost";
 
     @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
-    public TerminalResponse handleCommand(String command, String[] params) {
+    public void handleCommand() {
         try {
-            String cmd[] = new String[params.length + 1];
-            cmd[0] = command;
-            System.arraycopy(params, 0, cmd, 1, params.length);
+            String command = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ssh-terminal-command");
+            String cmd[] = command.trim().split(" ");
             System.out.println("Command: " + Arrays.toString(cmd));
             Process p = Runtime.getRuntime().exec(cmd);
             p.waitFor();
@@ -50,11 +52,19 @@ public class WebCommandLineController implements Serializable {
             inn.read(buffer);
             String result = new String(buffer);
             result = result.replaceAll("\n", "<br/>");
-            return new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
+            TerminalResponse response = new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.addCallbackParam("response", response);
+            System.out.println("Response: " + result);
         } catch (Exception ex) {
             Logger.getLogger(WebCommandLineController.class.getName()).log(Level.SEVERE, null, ex);
+            String result = ExceptionUtils.getFullStackTrace(ex);
+            result = result.replaceAll("\n", "<br/>").replaceAll("\"", "\\\"");
+            TerminalResponse response = new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.addCallbackParam("response", response);
         }
-        return new TerminalResponse("", TerminalResponse.TerminalResponseType.COMPLETE);
+
     }
 
     public String getPrompt() {

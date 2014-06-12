@@ -1,49 +1,49 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Jun 10, 2014, 12:43:29 PM
-    Author     : mochieng
-*/
-html, body{
-    padding: 0px;
-    margin: 0px;
-    height: 100%;
+.ws-async-terminal-clear{
+    clear: both;
 }
-.webcmd{
-
-}
-
-.webcmd *{
-    font-size: 14px;
-    color: #aaa;
-}
-
-.ui-terminal{
+.wc-ssh-terminal{
+    width: 99%;
+    height: auto;
     background: #000;
     color: #fff;
-    height: 800px;
-}
-
-.wc-terminal {
-    background: #000;
+    font-size: 14px;
+    padding: 10px 0.5%;
     height: 400px;
+    overflow-y: auto;
+}
+.wc-ssh-terminal .wc-ssh-terminal-ctx{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+.wc-ssh-terminal-line{
     width: 100%;
 }
-
-.ui-terminal-input{
-    padding-left: 4px;
+.wc-ssh-terminal .wc-ssh-terminal-prompt{
+    float: left;
 }
-
-.ui-terminal .ui-terminal-prompt .wc-host,
-.ui-terminal .ui-terminal-content span:first-child .wc-host
-{
-    color: #8CA6A2;
-}
-.ui-terminal .ui-terminal-prompt .wc-user,
-.ui-terminal .ui-terminal-content span:first-child .wc-user
-{
+.wc-ssh-terminal .wc-ssh-terminal-prompt-user{
     color: #339988;
+}
+.wc-ssh-terminal .wc-ssh-terminal-prompt-host{
+    color: #55cc88;
+}
+.wc-ssh-terminal .wc-ssh-terminal-prompt-dir{
+    color: #779988;
+}
+.wc-ssh-terminal .wc-ssh-terminal-view{
+    float: left;
+    margin-left: 5px;
+}
+.wc-ssh-terminal .wc-ssh-terminal-view input{
+    border: 0px none;
+    box-shadow: none;
+    text-shadow: none;
+    outline: none;
+    width: 100%;
+    background: #000;
+    color: #fff;
+}
+.wc-ssh-terminal .wc-ssh-terminal-view input:focus{
+    outline: #666;
 }

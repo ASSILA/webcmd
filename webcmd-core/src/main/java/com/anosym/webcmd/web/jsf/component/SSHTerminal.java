@@ -5,8 +5,10 @@
  */
 package com.anosym.webcmd.web.jsf.component;
 
+import static com.anosym.webcmd.web.jsf.component.SSHTerminal.COMPONENT_FAMILY;
+
 import javax.faces.component.FacesComponent;
-import org.primefaces.component.terminal.Terminal;
+import javax.faces.component.UIInput;
 
 /**
  *
@@ -14,19 +16,19 @@ import org.primefaces.component.terminal.Terminal;
  */
 @FacesComponent(
         namespace = "http://webcmd.anosym.com/jsf",
-        value = "com.anosym.webcmd.web.jsf.component.AsynchronousTerminal")
-public class AsynchronousTerminal extends Terminal {
+        value = COMPONENT_FAMILY)
+public class SSHTerminal extends UIInput {
 
-    protected static enum AsynchronousPropertyKeys {
+    protected static enum SSHPropertyKeys {
 
         channelId,
         cmdHandler;
         private String name_;
 
-        private AsynchronousPropertyKeys() {
+        private SSHPropertyKeys() {
         }
 
-        private AsynchronousPropertyKeys(String name_) {
+        private SSHPropertyKeys(String name_) {
             this.name_ = name_;
         }
 
@@ -37,17 +39,24 @@ public class AsynchronousTerminal extends Terminal {
 
     }
     public static final String RENDERER_TYPE = "com.anosym.webcmd.web.jsf.renderer.AsynchronousTerminalRenderer";
+    public static final String COMPONENT_TYPE = "com.anosym.webcmd.web.jsf.component.SSHTerminal";
+    public static final String COMPONENT_FAMILY = "javax.faces.Input";
 
-    public AsynchronousTerminal() {
+    public SSHTerminal() {
         setRendererType(RENDERER_TYPE);
     }
 
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public void setChannelId(String channelId) {
-        getStateHelper().put(AsynchronousPropertyKeys.channelId, channelId);
+        getStateHelper().put(SSHPropertyKeys.channelId, channelId);
     }
 
     public String getChannelId() {
-        return (String) getStateHelper().eval(AsynchronousPropertyKeys.channelId, "_channel");
+        return (String) getStateHelper().eval(SSHPropertyKeys.channelId, "_channel");
     }
 
 }

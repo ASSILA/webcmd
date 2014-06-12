@@ -5,12 +5,12 @@
                 version="2.0">
     <namespace>http://webcmd.anosym.com/jsf</namespace>
     <tag>
-        <tag-name>asyncTerminal</tag-name>
+        <tag-name>ssh</tag-name>
         <description><![CDATA[Terminal is an ajax powered component bringing desktop command-line tools to the web.]]></description>
         <component>
-            <component-type>com.anosym.webcmd.web.jsf.component.AsynchronousTerminal</component-type>
-            <renderer-type>com.anosym.webcmd.web.jsf.renderer.AsynchronousTerminalRenderer</renderer-type>
-            <handler-class>com.anosym.webcmd.web.jsf.component.AsynchronousTerminalHandler</handler-class>
+            <component-type>com.anosym.webcmd.web.jsf.component.SSHTerminal</component-type>
+            <renderer-type>com.anosym.webcmd.web.jsf.renderer.SSHTerminalRenderer</renderer-type>
+            <handler-class>com.anosym.webcmd.web.jsf.component.SSHTerminalHandler</handler-class>
         </component>
         <attribute>
             <description><![CDATA[Unique identifier of the component in a namingContainer.]]></description>
@@ -71,6 +71,30 @@
             <name>commandHandler</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The host to connect to securely using ssh.]]></description>
+            <name>host</name>
+            <required>true</required>
+            <type>string</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The username for the host.]]></description>
+            <name>user</name>
+            <required>true</required>
+            <type>string</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The password for the user. Not required if connecting through secret key.]]></description>
+            <name>password</name>
+            <required>false</required>
+            <type>string</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The id for the ssh file for the ssh key to use to connect to the host.]]></description>
+            <name>keyFile</name>
+            <required>false</required>
+            <type>string</type>
         </attribute>
     </tag>
 </facelet-taglib>
