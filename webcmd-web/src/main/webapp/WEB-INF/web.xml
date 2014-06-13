@@ -27,6 +27,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>async-terminal.xhtml</welcome-file>
+        <welcome-file>ssh-terminal.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

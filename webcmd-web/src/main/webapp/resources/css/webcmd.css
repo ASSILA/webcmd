@@ -8,8 +8,12 @@
     color: #fff;
     font-size: 14px;
     padding: 10px 0.5%;
-    height: 400px;
+    height: 800px;
     overflow-y: auto;
+}
+
+.wc-ssh-terminal p.wc-ssh-terminal-data{
+    padding-left: 20px;
 }
 .wc-ssh-terminal .wc-ssh-terminal-ctx{
     width: 100%;
@@ -35,6 +39,11 @@
     float: left;
     margin-left: 5px;
 }
+
+.wc-ssh-terminal .wc-ssh-terminal-prompt{
+    height: 22px;
+    margin-top: 3px;
+}
 .wc-ssh-terminal .wc-ssh-terminal-view input{
     border: 0px none;
     box-shadow: none;
@@ -46,4 +55,20 @@
 }
 .wc-ssh-terminal .wc-ssh-terminal-view input:focus{
     outline: #666;
+}
+
+.wc-ssh-terminal-welcome{
+    display: none;
+    background: transparent;
+}
+
+.wc-ssh-left{
+    width: 80%;
+    float: left;
+}
+
+.wc-ssh-right{
+    width: 18%;
+    margin-left: 1.5%;
+    float: left;
 }

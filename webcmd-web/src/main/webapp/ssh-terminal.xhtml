@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jp="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>SSH Terminal</title>
+        <!--<script src="http://code.jquery.com/jquery-2.0.0.min.js" type="text/javascript"/>-->
+        <h:outputScript name="webcmd.js" library="js"/>
+        <h:outputStylesheet name="webcmd.css" library="css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:remoteCommand name="sshLogout" actionListener="#{sshTerminalController.logout()}" update="@all"/>
+        </h:form>
+        <h:form id="registerForm" rendered="#{not sshTerminalController.loggedIn}">
+            <input type="hidden" name="wc-sshregistration-username"/>
+            <input type="hidden" name="wc-sshregistration-password"/>
+            <p:remoteCommand name="sshRegister" actionListener="#{sshTerminalController.registerNewUser()}"
+                             process="@form" update=":sshTerminalPanel:sshTerminalSetting @form" oncomplete="WEBCMD.onRegistration(xhr, status, args)"/>
+        </h:form>
+        <p:tabView activeIndex="0" widgetVar="sshTerminal" id="sshTerminalPanel">
+            <p:tab title="SSH Terminal">
+                <h:panelGroup layout="block" styleClass="wc-ssh-left">
+                    <h:form>
+                        <div class="wc-ssh-terminal" data-user="ssh" data-host="webcmd" data-dir="~" data-connected="false" data-clickMP3="#{resource['audio/click.mp3']}">
+                        </div>
+                        <p:remoteCommand name="wcSSHSend" process="@form" oncomplete="WEBCMD.handleResult(xhr, status, args);"
+                                         actionListener="#{sshTerminalController.handleCommand()}"/>
+                    </h:form>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="wc-ssh-right">
+
+                </h:panelGroup>
+                <div class="ws-async-terminal-clear"></div>
+            </p:tab>
+            <p:tab title="SSH Settings" >
+                <h:panelGroup id="sshTerminalSetting" layout="block" styleClass="wc-ssh-left">
+                    <p:accordionPanel activeIndex="0" rendered="#{sshTerminalController.loggedIn}">
+                        <p:tab title="Add new SSH Key">
+                            <h:form>
+                                <p:panelGrid style="width: 100%" columns="1">
+                                    <p:outputLabel value="SSH Key ID" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshKeyID" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">Every ssh key file uploaded is assigned a unique id, which is used to reference the host to connect to.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH Host" for="sshHost"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshHost" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The host to connect to securely.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH User" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshUser" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The userid to use to connect to host.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="Browse SSH Keys" for="sshKey"/><h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:fileUpload id="sshKey" uploadLabel="Upload SSH File" process="@form"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="khameoleon-live">
+                            <h:form>
+                                <p:panelGrid style="width: 100%" columns="1">
+                                    <p:outputLabel value="SSH Key ID" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshKeyID" style="width: 99.5%" jp:disabled="disabled" value="********"/>
+                                        <p style="color: #777; font-size: 12px">Every ssh key file uploaded is assigned a unique id, which is used to reference the host to connect to.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH Host" for="sshHost"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshHost" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The host to connect to securely.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH User" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshUser" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The userid to use to connect to host.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="Update SSH Key" for="sshKey"/><h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:fileUpload id="sshKey" uploadLabel="Upload SSH File" process="@form"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="webcmd-live">
+                            <h:form>
+                                <p:panelGrid style="width: 100%" columns="1">
+                                    <p:outputLabel value="SSH Key ID" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshKeyID" style="width: 99.5%" jp:disabled="disabled" value="********"/>
+                                        <p style="color: #777; font-size: 12px">Every ssh key file uploaded is assigned a unique id, which is used to reference the host to connect to.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH Host" for="sshHost"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshHost" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The host to connect to securely.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="SSH User" for="sshKeyID"/>
+                                    <h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:inputText id="sshUser" style="width: 99.5%"/>
+                                        <p style="color: #777; font-size: 12px">The userid to use to connect to host.</p>
+                                    </h:panelGroup>
+                                    <p:outputLabel value="Update SSH Key" for="sshKey"/><h:panelGroup layout="block" style="width: 100%">
+                                        <br/>
+                                        <p:fileUpload id="sshKey" uploadLabel="Upload SSH File" process="@form"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="wc-ssh-right">
+
+                </h:panelGroup>
+                <div class="ws-async-terminal-clear"></div>
+            </p:tab>
+        </p:tabView>
+
+    </h:body>
+</html>
+

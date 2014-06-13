@@ -5,15 +5,14 @@
  */
 package com.anosym.webcmd.web;
 
+import com.anosym.webcmd.web.profile.Profile;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.push.PushContext;
 
@@ -22,8 +21,8 @@ import org.primefaces.push.PushContext;
  * @author mochieng
  */
 @SessionScoped
-@Named
-public class WebCommandLineController implements Serializable {
+@Named("sshTerminalController")
+public class SSHTerminalController implements Serializable {
 
     /**
      * This will be based on current logged in user unique identifier.
@@ -36,6 +35,11 @@ public class WebCommandLineController implements Serializable {
     private String currentUserId = "mochieng";
     private String pwd = "~";
     private String hostname = "localhost";
+    private Profile profile;
+
+    private static String getParameter(String paramId) {
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(paramId);
+    }
 
     @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public void handleCommand() {
@@ -50,20 +54,46 @@ public class WebCommandLineController implements Serializable {
             byte[] buffer = new byte[count];
             //wait for the input to be available.
             inn.read(buffer);
-            String result = new String(buffer);
-            result = result.replaceAll("\n", "<br/>");
-            TerminalResponse response = new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
-            RequestContext rc = RequestContext.getCurrentInstance();
-            rc.addCallbackParam("response", response);
-            System.out.println("Response: " + result);
+//            String result = new String(buffer);
+//            SSHTerminalResponse response = new SSHTerminalResponse(result, SSHTerminalResponse.TerminalResponseType.COMPLETE);
+//            RequestContext rc = RequestContext.getCurrentInstance();
+//            rc.addCallbackParam("response", response);
+//            System.out.println("Response: " + result);
         } catch (Exception ex) {
-            Logger.getLogger(WebCommandLineController.class.getName()).log(Level.SEVERE, null, ex);
-            String result = ExceptionUtils.getFullStackTrace(ex);
-            result = result.replaceAll("\n", "<br/>").replaceAll("\"", "\\\"");
-            TerminalResponse response = new TerminalResponse(result, TerminalResponse.TerminalResponseType.COMPLETE);
-            RequestContext rc = RequestContext.getCurrentInstance();
-            rc.addCallbackParam("response", response);
+//            Logger.getLogger(SSHTerminalController.class.getName()).log(Level.SEVERE, null, ex);
+//            String result = ExceptionUtils.getFullStackTrace(ex);
+//            SSHTerminalResponse response = new SSHTerminalResponse(result, SSHTerminalResponse.TerminalResponseType.COMPLETE);
+//            RequestContext rc = RequestContext.getCurrentInstance();
+//            rc.addCallbackParam("response", response);
         }
+
+    }
+
+    public void registerNewUser() {
+        String username = getParameter("wc-sshregistration-username");
+        String password = getParameter("wc-sshregistration-password");
+        System.out.println("Username: " + username);
+        System.out.println("password: " + password);
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
+            profile = new Profile(username, password);
+            System.out.println("Profile Created:  " + profile);
+            ctx.addCallbackParam("isSuccess", true);
+        } else {
+            ctx.addCallbackParam("error", "You must provide username and password");
+            ctx.addCallbackParam("isSuccess", false);
+        }
+    }
+
+    public void logout() {
+        this.profile = null;
+    }
+
+    public boolean isLoggedIn() {
+        return profile != null;
+    }
+
+    public void endSession() {
 
     }
 

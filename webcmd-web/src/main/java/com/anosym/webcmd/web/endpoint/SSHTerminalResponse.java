@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.anosym.webcmd.web;
+package com.anosym.webcmd.web.endpoint;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author mochieng
  */
-public class TerminalResponse implements Serializable{
+public class SSHTerminalResponse implements Serializable {
 
     public static enum TerminalResponseType {
 
@@ -28,14 +28,32 @@ public class TerminalResponse implements Serializable{
 
         void onResponseComplete();
     }
+    private final String pwd;
+    private final String userId;
+    private final String host;
     private final String response;
     private final TerminalResponseType responseType;
     //registered listener to this reponse if you require more data.
     private TerminalResponseListener responseListener;
 
-    public TerminalResponse(String response, TerminalResponseType responseType) {
+    public SSHTerminalResponse(String pwd, String userId, String host, String response, TerminalResponseType responseType) {
+        this.pwd = pwd;
+        this.userId = userId;
+        this.host = host;
         this.response = response;
         this.responseType = responseType;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getHost() {
+        return host;
     }
 
     public String getResponse() {
